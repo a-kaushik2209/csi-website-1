@@ -2,7 +2,11 @@ import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'github',
+    repo: {
+      owner: 'PrathamGupta06',
+      name: 'csi-website',
+    },
   },
   collections: {
     sponsors: collection({
