@@ -21,10 +21,6 @@ export const getStaticPaths = (async () => {
 
 const { event } = Astro.props;
 
-// Transform Keystatic event to Post format
-const coverImage = event.entry.coverImage;
-const imageSrc = (coverImage.discriminant === 'url' ? coverImage.value : coverImage.value) || '';
-
 // Read the full content
 const reader = createReader(process.cwd(), keystaticConfig);
 const eventData = await reader.collections.events.read(event.slug);
@@ -39,7 +35,7 @@ const post: Post = {
 
   title: event.entry.title,
   excerpt: event.entry.excerpt || '',
-  image: imageSrc,
+  image: event.entry.coverImage || '',
 
   category: { slug: 'events', title: 'Events' },
   tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
@@ -49,7 +45,7 @@ const post: Post = {
   metadata: {},
 };
 
-const url = new URL(Astro.url.pathname, Astro.site);
+const imageSrc = event.entry.coverImage || '';
 
 const metadata = {
   title: post.title,

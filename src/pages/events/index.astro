@@ -15,28 +15,19 @@ const eventsEntries = await reader.collections.events.all();
 
 // Transform Keystatic events to match Post interface
 const events: Post[] = await Promise.all(
-  eventsEntries.map(async (event) => {
-    const coverImage = event.entry.coverImage;
-    const imageSrc = (coverImage.discriminant === 'url' ? coverImage.value : coverImage.value) || '';
-
-    return {
-      id: event.slug,
-      slug: event.slug,
-      permalink: `/events/${event.slug}`,
-
-      publishDate: new Date(event.entry.eventDate),
-      updateDate: new Date(event.entry.eventDate),
-
-      title: event.entry.title,
-      excerpt: event.entry.excerpt || '',
-      image: imageSrc,
-
-      category: { slug: 'events', title: 'Events' },
-      tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
-
-      metadata: {},
-    };
-  })
+  eventsEntries.map(async (event) => ({
+    id: event.slug,
+    slug: event.slug,
+    permalink: `/events/${event.slug}`,
+    publishDate: new Date(event.entry.eventDate),
+    updateDate: new Date(event.entry.eventDate),
+    title: event.entry.title,
+    excerpt: event.entry.excerpt || '',
+    image: event.entry.coverImage || '',
+    category: { slug: 'events', title: 'Events' },
+    tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
+    metadata: {},
+  }))
 );
 
 // Sort by event date (newest first)

@@ -18,16 +18,12 @@ const reader = createReader(process.cwd(), keystaticConfig);
 const sponsorsEntries = await reader.collections.sponsors.all();
 const sponsors = sponsorsEntries
   .sort((a, b) => (a.entry.displayOrder || 0) - (b.entry.displayOrder || 0))
-  .map((sponsor) => {
-    const logo = sponsor.entry.logo;
-    const logoSrc = (logo.discriminant === 'url' ? logo.value : logo.value) || '';
-    return {
-      src: logoSrc,
-      alt: sponsor.entry.name,
-      width: 120,
-      height: 48,
-    };
-  })
+  .map((sponsor) => ({
+    src: sponsor.entry.logo || '',
+    alt: sponsor.entry.name,
+    width: 120,
+    height: 48,
+  }))
   .filter((sponsor) => sponsor.src); // Filter out sponsors without logos
 
 // Fetch recent events (latest 3)
@@ -35,24 +31,19 @@ const eventsEntries = await reader.collections.events.all();
 const recentEvents: Post[] = eventsEntries
   .sort((a, b) => new Date(b.entry.eventDate).getTime() - new Date(a.entry.eventDate).getTime())
   .slice(0, 3)
-  .map((event) => {
-    const coverImage = event.entry.coverImage;
-    const imageSrc = (coverImage.discriminant === 'url' ? coverImage.value : coverImage.value) || '';
-    
-    return {
-      id: event.slug,
-      slug: event.slug,
-      permalink: `/events/${event.slug}`,
-      publishDate: new Date(event.entry.eventDate),
-      updateDate: new Date(event.entry.eventDate),
-      title: event.entry.title,
-      excerpt: event.entry.excerpt || '',
-      image: imageSrc,
-      category: { slug: 'events', title: 'Events' },
-      tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
-      metadata: {},
-    };
-  });
+  .map((event) => ({
+    id: event.slug,
+    slug: event.slug,
+    permalink: `/events/${event.slug}`,
+    publishDate: new Date(event.entry.eventDate),
+    updateDate: new Date(event.entry.eventDate),
+    title: event.entry.title,
+    excerpt: event.entry.excerpt || '',
+    image: event.entry.coverImage || '',
+    category: { slug: 'events', title: 'Events' },
+    tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
+    metadata: {},
+  }));
 
 const metadata = {
   title: 'CSI - Innowave | Where Innovation Meets Excellence',

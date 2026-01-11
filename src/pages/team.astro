@@ -38,27 +38,22 @@ for (const category in categories) {
   teamByCategory[category] = teamEntries
     .filter((member) => member.entry.category === category)
     .sort((a, b) => (a.entry.displayOrder || 0) - (b.entry.displayOrder || 0))
-    .map((member) => {
-      const photo = member.entry.photo;
-      const photoSrc = (photo.discriminant === 'url' ? photo.value : photo.value) || '';
-      return {
-        title: member.entry.name,
-        description: member.entry.role,
-        image: {
-          src: photoSrc,
-          alt: member.entry.name,
-        },
-        callToAction: member.entry.linkedIn
-          ? {
-              text: 'LinkedIn',
-              href: member.entry.linkedIn,
-              target: '_blank',
-              icon: 'tabler:brand-linkedin',
-            }
-          : undefined,
-      };
-    })
-    .filter((member) => member.image.src); // Filter out members without photos
+    .map((member) => ({
+      title: member.entry.name,
+      description: member.entry.role,
+      image: {
+        src: member.entry.photo || '',
+        alt: member.entry.name,
+      },
+      callToAction: member.entry.linkedIn
+        ? {
+            text: 'LinkedIn',
+            href: member.entry.linkedIn,
+            target: '_blank',
+            icon: 'tabler:brand-linkedin',
+          }
+        : undefined,
+    }));
 }
 
 const metadata = {

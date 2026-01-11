@@ -17,35 +17,10 @@ export default config({
       schema: {
         name: fields.slug({ name: { label: 'Sponsor Name' } }),
         website: fields.url({ label: 'Website URL' }),
-        logoType: fields.select({
-          label: 'Logo Source',
-          options: [
-            { label: 'Upload File', value: 'upload' },
-            { label: 'Cloudinary URL', value: 'url' },
-          ],
-          defaultValue: 'upload',
+        logo: fields.url({
+          label: 'Logo URL',
+          description: 'Cloudinary or external image URL for the sponsor logo',
         }),
-        logo: fields.conditional(
-          fields.select({
-            label: 'Logo Source',
-            options: [
-              { label: 'Upload File', value: 'upload' },
-              { label: 'Cloudinary URL', value: 'url' },
-            ],
-            defaultValue: 'upload',
-          }),
-          {
-            upload: fields.image({
-              label: 'Upload Logo',
-              directory: 'public/images/sponsors',
-              publicPath: '/images/sponsors/',
-            }),
-            url: fields.url({
-              label: 'Cloudinary URL',
-              description: 'Paste your Cloudinary image URL here',
-            }),
-          }
-        ),
         tier: fields.select({
           label: 'Sponsor Tier',
           options: [
@@ -86,27 +61,10 @@ export default config({
           label: 'Location',
           validation: { isRequired: true },
         }),
-        coverImage: fields.conditional(
-          fields.select({
-            label: 'Cover Image Source',
-            options: [
-              { label: 'Upload File', value: 'upload' },
-              { label: 'Cloudinary URL', value: 'url' },
-            ],
-            defaultValue: 'upload',
-          }),
-          {
-            upload: fields.image({
-              label: 'Upload Cover Image',
-              directory: 'public/images/events',
-              publicPath: '/images/events/',
-            }),
-            url: fields.url({
-              label: 'Cloudinary URL',
-              description: 'Paste your Cloudinary image URL here',
-            }),
-          }
-        ),
+        coverImage: fields.url({
+          label: 'Cover Image URL',
+          description: 'Cloudinary or external image URL for the event cover',
+        }),
         excerpt: fields.text({
           label: 'Short Description',
           multiline: true,
@@ -161,27 +119,10 @@ export default config({
           ],
           defaultValue: 'core',
         }),
-        photo: fields.conditional(
-          fields.select({
-            label: 'Photo Source',
-            options: [
-              { label: 'Upload File', value: 'upload' },
-              { label: 'Cloudinary URL', value: 'url' },
-            ],
-            defaultValue: 'upload',
-          }),
-          {
-            upload: fields.image({
-              label: 'Upload Profile Photo',
-              directory: 'public/images/team',
-              publicPath: '/images/team/',
-            }),
-            url: fields.url({
-              label: 'Cloudinary URL',
-              description: 'Paste your Cloudinary image URL here',
-            }),
-          }
-        ),
+        photo: fields.url({
+          label: 'Photo URL',
+          description: 'Cloudinary or external image URL for the profile photo',
+        }),
         linkedIn: fields.url({
           label: 'LinkedIn Profile',
         }),
@@ -210,27 +151,10 @@ export default config({
           description: 'Tag used to fetch photos from Cloudinary (e.g., "gallery-techfest-2025")',
           validation: { isRequired: true },
         }),
-        coverImage: fields.conditional(
-          fields.select({
-            label: 'Cover Image Source',
-            options: [
-              { label: 'Upload File', value: 'upload' },
-              { label: 'Cloudinary URL', value: 'url' },
-            ],
-            defaultValue: 'upload',
-          }),
-          {
-            upload: fields.image({
-              label: 'Upload Cover Image',
-              directory: 'public/images/gallery',
-              publicPath: '/images/gallery/',
-            }),
-            url: fields.url({
-              label: 'Cloudinary URL',
-              description: 'Paste your Cloudinary image URL here',
-            }),
-          }
-        ),
+        coverImage: fields.url({
+          label: 'Cover Image URL',
+          description: 'Cloudinary or external image URL for the gallery cover (optional)',
+        }),
         description: fields.text({
           label: 'Event Description',
           multiline: true,
